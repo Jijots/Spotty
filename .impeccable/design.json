@@ -1,0 +1,407 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-22T17:34:45.732934+00:00",
+  "title": "Design System: Spotty",
+  "extensions": {
+    "colorMeta": {
+      "sky-wash": {
+        "role": "neutral",
+        "displayName": "Sky Wash",
+        "canonical": "#E3F2FD",
+        "tonalRamp": [
+          "#0B1220",
+          "#49525F",
+          "#86929E",
+          "#C4D2DD",
+          "#E7F4FD",
+          "#EEF7FE",
+          "#F5FAFE",
+          "#FCFEFF"
+        ]
+      },
+      "paper-white": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0B1220",
+          "#515660",
+          "#96999F",
+          "#DCDDDF",
+          "#FFFFFF",
+          "#FFFFFF",
+          "#FFFFFF",
+          "#FFFFFF"
+        ]
+      },
+      "blue-rim": {
+        "role": "neutral",
+        "displayName": "Blue Rim",
+        "canonical": "#90CAF9",
+        "tonalRamp": [
+          "#0B1220",
+          "#31475E",
+          "#577B9C",
+          "#7DB0DA",
+          "#9ED1FA",
+          "#BBDEFB",
+          "#D7ECFD",
+          "#F4FAFE"
+        ]
+      },
+      "harbor-ink": {
+        "role": "neutral",
+        "displayName": "Harbor Ink",
+        "canonical": "#0A2A52",
+        "tonalRamp": [
+          "#0B1220",
+          "#0B192E",
+          "#0A203D",
+          "#0A274B",
+          "#294568",
+          "#687C95",
+          "#A7B3C1",
+          "#E6EAEE"
+        ]
+      },
+      "slate-blue": {
+        "role": "neutral",
+        "displayName": "Slate Blue",
+        "canonical": "#44608A",
+        "tonalRamp": [
+          "#0B1220",
+          "#1B283E",
+          "#2C3F5D",
+          "#3C557B",
+          "#5C7499",
+          "#8C9DB7",
+          "#BCC6D5",
+          "#ECEFF3"
+        ]
+      },
+      "deep-blue": {
+        "role": "primary",
+        "displayName": "Deep Blue",
+        "canonical": "#0D47A1",
+        "tonalRamp": [
+          "#0B1220",
+          "#0C2145",
+          "#0C306A",
+          "#0D3F8F",
+          "#2C5FAD",
+          "#6A8EC5",
+          "#A9BDDD",
+          "#E7EDF6"
+        ]
+      },
+      "signal-blue": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "canonical": "#2196F3",
+        "tonalRamp": [
+          "#0B1220",
+          "#11385C",
+          "#185D99",
+          "#1E83D5",
+          "#3EA4F5",
+          "#77BEF8",
+          "#B0DAFB",
+          "#E9F4FE"
+        ]
+      },
+      "record-amber": {
+        "role": "secondary",
+        "displayName": "Record Amber",
+        "canonical": "#FFB300",
+        "tonalRamp": [
+          "#0B1220",
+          "#514017",
+          "#966E0E",
+          "#DC9C05",
+          "#FFBD21",
+          "#FFD062",
+          "#FFE4A4",
+          "#FFF7E6"
+        ]
+      },
+      "brick-red": {
+        "role": "secondary",
+        "displayName": "Brick Red",
+        "canonical": "#C62828",
+        "tonalRamp": [
+          "#0B1220",
+          "#401822",
+          "#761F25",
+          "#AB2527",
+          "#CD4444",
+          "#DC7B7B",
+          "#EBB2B2",
+          "#F9EAEA"
+        ]
+      },
+      "night-ground": {
+        "role": "neutral",
+        "displayName": "Night Ground",
+        "canonical": "#0A0C10",
+        "tonalRamp": [
+          "#0B1220",
+          "#0B101B",
+          "#0A0F17",
+          "#0A0D12",
+          "#292B2F",
+          "#686A6C",
+          "#A7A8AA",
+          "#E6E7E7"
+        ]
+      },
+      "night-card": {
+        "role": "neutral",
+        "displayName": "Night Card",
+        "canonical": "#232A36",
+        "tonalRamp": [
+          "#0B1220",
+          "#121926",
+          "#19202D",
+          "#202733",
+          "#3F4550",
+          "#787C84",
+          "#B0B3B7",
+          "#E9EAEB"
+        ]
+      },
+      "night-rim": {
+        "role": "neutral",
+        "displayName": "Night Rim",
+        "canonical": "#3A4658",
+        "tonalRamp": [
+          "#0B1220",
+          "#182130",
+          "#263040",
+          "#333F50",
+          "#535E6D",
+          "#868D98",
+          "#B9BDC3",
+          "#EBECEE"
+        ]
+      },
+      "frost-ink": {
+        "role": "neutral",
+        "displayName": "Frost Ink",
+        "canonical": "#EAF1F8",
+        "tonalRamp": [
+          "#0B1220",
+          "#4B525E",
+          "#8A919B",
+          "#CAD1D9",
+          "#EDF3F9",
+          "#F2F6FB",
+          "#F8FAFC",
+          "#FDFEFE"
+        ]
+      },
+      "mist-gray": {
+        "role": "neutral",
+        "displayName": "Mist Gray",
+        "canonical": "#9AA8BA",
+        "tonalRamp": [
+          "#0B1220",
+          "#343D4C",
+          "#5D6878",
+          "#8693A4",
+          "#A7B3C3",
+          "#C1CAD5",
+          "#DBE0E6",
+          "#F5F6F8"
+        ]
+      },
+      "glow-blue": {
+        "role": "primary",
+        "displayName": "Glow Blue",
+        "canonical": "#64B5F6",
+        "tonalRamp": [
+          "#0B1220",
+          "#24415D",
+          "#3E6F9A",
+          "#579ED7",
+          "#78BFF7",
+          "#A0D2F9",
+          "#C8E5FC",
+          "#F0F8FE"
+        ]
+      },
+      "night-amber": {
+        "role": "secondary",
+        "displayName": "Night Amber",
+        "canonical": "#FFC107",
+        "tonalRamp": [
+          "#0B1220",
+          "#514419",
+          "#967612",
+          "#DCA80B",
+          "#FFC927",
+          "#FFD967",
+          "#FFE9A6",
+          "#FFF9E6"
+        ]
+      },
+      "night-red": {
+        "role": "secondary",
+        "displayName": "Night Red",
+        "canonical": "#FF8A94",
+        "tonalRamp": [
+          "#0B1220",
+          "#513441",
+          "#965762",
+          "#DC7983",
+          "#FF99A2",
+          "#FFB7BD",
+          "#FFD5D9",
+          "#FFF3F4"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Screen titles and the big card title."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Weight, reps, RIR and stats; tabular figures."
+      },
+      "countdown": {
+        "displayName": "Countdown",
+        "purpose": "Rest timer and session clock."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "exercise-flip",
+        "value": "900ms per frame, tap to pause",
+        "purpose": "Flips start and end photos to show the movement; paused when reduce-motion is on."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone-min",
+        "value": "320dp"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one main action on a screen.",
+      "html": "<button class=\"ds-btn\">Start</button>",
+      "css": ".ds-btn{background:#0D47A1;color:#fff;font:700 16px system-ui;min-height:52px;padding:12px 28px;border:0;border-radius:999px}.ds-btn:focus-visible{outline:3px solid #2196F3;outline-offset:2px}.ds-btn:active{opacity:.85}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action next to a primary one.",
+      "html": "<button class=\"ds-ghost\">Quick workout</button>",
+      "css": ".ds-ghost{background:transparent;color:#0A2A52;font:600 15px system-ui;min-height:48px;padding:10px 24px;border:1px solid #90CAF9;border-radius:999px}.ds-ghost:focus-visible{outline:3px solid #2196F3;outline-offset:2px}"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Filter and choice pill; selected fills with the action color.",
+      "html": "<span class=\"ds-chip\">Barbell</span> <span class=\"ds-chip ds-on\">Dumbbell</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;min-height:48px;padding:0 18px;border:1px solid #90CAF9;border-radius:999px;color:#0A2A52;font:600 15px system-ui}.ds-on{background:#0D47A1;border-color:#0D47A1;color:#fff}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Every grouped block.",
+      "html": "<div class=\"ds-card\"><h3>This week</h3><p>0 workouts</p></div>",
+      "css": ".ds-card{background:#fff;border:1px solid #90CAF9;border-radius:14px;padding:14px;color:#0A2A52;font:15px system-ui}.ds-card h3{margin:0 0 6px;font:800 17px system-ui}.ds-card p{margin:0;color:#44608A;font-size:13px}"
+    },
+    {
+      "name": "Hero Card",
+      "kind": "card",
+      "refersTo": "hero-card",
+      "description": "The one thing to do next: Up next or In progress.",
+      "html": "<div class=\"ds-hero\"><small>UP NEXT</small><h2>Upper A</h2><button>Start</button></div>",
+      "css": ".ds-hero{background:#0D47A1;color:#fff;border-radius:24px;padding:18px;font-family:system-ui}.ds-hero small{font:600 12px system-ui;letter-spacing:.6px}.ds-hero h2{margin:2px 0 14px;font:800 26px system-ui}.ds-hero button{background:#fff;color:#0D47A1;font:700 16px system-ui;min-height:48px;padding:0 32px;border:0;border-radius:999px}"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Always labelled, 48px tall, unit beside it.",
+      "html": "<label class=\"ds-f\">Weight<span><input value=\"80\"> kg</span></label>",
+      "css": ".ds-f{display:grid;gap:6px;font:600 12px system-ui;color:#44608A}.ds-f span{display:flex;gap:8px;align-items:center;font:13px system-ui}.ds-f input{min-height:48px;width:96px;text-align:center;font:600 20px system-ui;background:#E3F2FD;color:#0A2A52;border:1px solid #90CAF9;border-radius:10px}.ds-f input:focus-visible{outline:3px solid #2196F3}"
+    },
+    {
+      "name": "Set Row",
+      "kind": "custom",
+      "refersTo": "set-check",
+      "description": "One set: tinted number, weight, reps, RIR, check.",
+      "html": "<div class=\"ds-set\"><b>1</b><i>80</i><i>8</i><i>2</i><u></u></div>",
+      "css": ".ds-set{display:flex;gap:6px;align-items:center;font:600 20px system-ui;color:#0A2A52}.ds-set b{width:24px;height:24px;border-radius:12px;background:#1976D2;color:#fff;font-size:13px;display:grid;place-items:center}.ds-set i{font-style:normal;min-width:56px;min-height:48px;display:grid;place-items:center;background:#E3F2FD;border:1px solid #90CAF9;border-radius:10px}.ds-set u{width:48px;height:48px;border-radius:24px;background:#0D47A1}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Training Partner",
+    "overview": "**Creative North Star: \"The Training Partner\"**\n\nThe app is a partner that keeps you training, built from three roles that never compete. The **logbook** is the base: flat, numbers first, nothing between you and the next set. The **spotter** is the voice: quiet while you work, speaking up only when it helps (the rest is over, a warm-up ramp, a swap that fits). The **scoreboard** is the payoff: a personal record or a finished workout gets the one warm color in the system, amber, and the screen lets you feel it.\n\nThe structure follows how a day actually goes. **Today** is a short summary of what is up: the next workout with one Start button, the week, and which muscles are recovered. **Programs** is the shelf. Starting a workout opens a full-screen **session** with a running clock and rest timers, and nothing else competes for the screen. In the session the system is calm, dense and utilitarian. Warmth shows on the summary screens and at the wins, never mid-set.\n\nIt follows the phone's light or dark setting and nothing else. Both themes are blue: a pale sky ground with white cards by day, a near-black ground with clearly lighter cards by night. It is designed for use standing in a gym, one-handed, with chalk or sweat on the fingers, so targets are large and forgiving by intent.",
+    "keyCharacteristics": [
+      "One blue family carries everything: action, selection, charts and the body figure. Amber appears only for records and red only for danger.",
+      "Flat. Depth comes from tone and 1px borders, never shadows.",
+      "Pill buttons and chips, softly rounded cards, a large rounded hero card for the one thing to do next.",
+      "Manrope for headings, the system face with tabular figures for every number.",
+      "The body figure (front and back) is the data display: muscles shaded by recovery or by weekly volume."
+    ],
+    "rules": [
+      {
+        "name": "The Earned Amber Rule",
+        "body": "Amber marks a personal record and nothing else. If amber appears on something that is not a record, remove it.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "New states use a step of the blue ramp, weight, border or copy before a new hue. Red is for danger only.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never-Alone Rule",
+        "body": "Effort tint on a set number, muscle shading and recovery shading are hints. The exact value (RIR, hours, set count) always appears as text beside them.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Weights Rule",
+        "body": "Emphasis is 600 or 700 and regular text is 400. Never light or thin weights, which wash out in bright gym light.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "No drop shadows, gradients or glass. A state change moves a border or a fill color.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do follow the phone's light or dark setting and design both themes at equal quality.",
+      "Do use amber only for records and red only for danger (The Earned Amber Rule).",
+      "Do keep surfaces flat: ground, card, 1px border, no shadows.",
+      "Do make every tappable control at least 48dp with 6dp or more between neighbors, so it works with chalk or sweat on the fingers.",
+      "Do put headings in Manrope and every number in the tabular system face.",
+      "Do write the real value beside any color or shading that encodes it (The Never-Alone Rule).",
+      "Do label estimates as estimates and keep copy short and plain, with warmth reserved for the summary screens and wins.",
+      "Do put an explicit way out on every full-screen flow and a visible error that names the field and the range."
+    ],
+    "donts": [
+      "Don't add another accent hue; use a blue-ramp step, weight or copy first.",
+      "Don't add shadows, gradients or glass effects.",
+      "Don't put motivation into the interface while a set is in progress.",
+      "Don't pause the session clock or hide the rest timer behind other UI.",
+      "Don't rely on color alone for state (set done, record, effort, recovery).",
+      "Don't create module-level style constants from the theme; read `colors`, `type` and `ui` at render time so a theme change takes effect.",
+      "Don't ship light-weight (300 or below) type."
+    ]
+  }
+}

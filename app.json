@@ -1,13 +1,15 @@
 {
   "expo": {
-    "name": "gym-app",
+    "name": "Spotty",
     "slug": "gym-app",
+    "scheme": "spotty",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "app.spotty.fitness"
     },
     "android": {
       "adaptiveIcon": {
@@ -16,10 +18,23 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "app.spotty.fitness"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-sqlite",
+      "expo-router",
+      "expo-status-bar",
+      "expo-font"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "54cd82da-e56e-493b-97a9-07037ac73c26"
+      }
     }
   }
 }
