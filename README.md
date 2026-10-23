@@ -5,6 +5,14 @@ times your rest, suggests when to add weight, and speaks up only when it helps.
 
 No account. No subscription. No ads. Everything you log stays on your phone (SQLite).
 
+<p align="center">
+  <img src="docs/screenshots/today.png" width="19%" alt="Today screen with the next workout and muscle recovery">
+  <img src="docs/screenshots/workout.png" width="19%" alt="A workout in progress with per-exercise rest timers">
+  <img src="docs/screenshots/rest-timer.png" width="19%" alt="Setting a custom rest time for one exercise">
+  <img src="docs/screenshots/generator.png" width="19%" alt="The rule-based program generator">
+  <img src="docs/screenshots/exercise.png" width="19%" alt="An exercise with its muscle map and photo">
+</p>
+
 ## What it does
 
 - **Today** shows your next workout with one Start button, your week, and which muscles have recovered (front and back body map).

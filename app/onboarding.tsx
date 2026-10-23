@@ -1,4 +1,4 @@
-import { ScrollView, Text } from 'react-native';
+import { Image, ScrollView, Text } from 'react-native';
 import { SettingsForm } from '../src/SettingsForm';
 import { type, ui } from '../src/theme';
 import { useContentStyle } from '../src/safe';
@@ -7,6 +7,7 @@ export default function Onboarding() {
   const content = useContentStyle({ paddingTop: 56 });
   return (
     <ScrollView style={ui.screen} contentContainerStyle={content} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">
+      <Image source={require('../assets/icon.png')} accessibilityLabel="Spotty logo, a blue bumper plate" style={{ width: 84, height: 84, borderRadius: 20 }} />
       <Text style={ui.h1} accessibilityRole="header">Welcome to Spotty</Text>
       <Text style={ui.muted}>Pick your units and the equipment you have, so auto-built workouts fit your gym. Everything stays on this phone, and you can change it anytime in Settings.</Text>
       <SettingsForm submitLabel="Get started" />

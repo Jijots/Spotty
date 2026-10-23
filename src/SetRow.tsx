@@ -72,7 +72,7 @@ export function SetRow({ row, label, shortLabel, unit, weighted, weightStep, act
           onPress={onActivate} onLongPress={onRemove}
           accessibilityLabel={`${label}${effort ? `, ${effort.word}` : ''}. Double tap to select, long press to remove`} accessibilityState={{ selected: active }}
           style={{ width: LABEL_W, height: TARGET, alignItems: 'center', justifyContent: 'center' }}>
-          <View style={{ width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: fill }}>
+          <View style={{ width: 24, height: 24, borderRadius: 999, overflow: 'hidden', alignItems: 'center', justifyContent: 'center', backgroundColor: fill }}>
             <Text style={[type.header, { fontSize: 13 }, row.warmup && { color: colors.accentText }, fill && { color: readableOn(fill) }]}>{shortLabel}</Text>
           </View>
         </TouchableOpacity>
