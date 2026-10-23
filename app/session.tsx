@@ -527,6 +527,23 @@ export default function SessionScreen() {
             const prs = prsFor(b);
             const lastLine = formatLast(lastBy.get(b.exerciseId), unit);
             const hasWarmups = b.rows.some((r) => r.warmup);
+            const workingSetCount = b.rows.filter((r) => !r.warmup).length;
+            const exerciseActions: {
+              label: string;
+              hint: string;
+              icon: keyof typeof Ionicons.glyphMap;
+              color: string;
+              onPress: () => void;
+            }[] = [
+              ...(!b.weighted
+                ? [{ label: 'Add weight', hint: 'Add weight to this exercise', icon: 'barbell-outline' as const, color: colors.accentText, onPress: () => enableWeight(bi) }]
+                : []),
+              ...(b.compound && b.weighted && !hasWarmups
+                ? [{ label: 'Warm-ups', hint: 'Add warm-up sets', icon: 'trending-up-outline' as const, color: colors.accentText, onPress: () => addWarmups(bi) }]
+                : []),
+              { label: 'Swap', hint: 'Swap this exercise for a similar one', icon: 'swap-horizontal-outline', color: colors.text, onPress: () => setSwapIdx(bi) },
+              { label: 'Skip', hint: 'Skip this exercise today', icon: 'play-skip-forward-outline', color: colors.danger, onPress: () => skipExercise(bi) },
+            ];
             let workNo = 0;
             return (
               <View key={`${b.exerciseId}-${bi}`} onLayout={(e) => { cardY.current[bi] = e.nativeEvent.layout.y; }} style={[ui.card, { gap: 8, overflow: 'hidden' }]}>
@@ -577,25 +594,41 @@ export default function SessionScreen() {
                   );
                 })}
 
-                {/* A two-column grid keeps set, swap and skip controls visible at a one-hand-friendly size. */}
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', borderTopWidth: 1, borderTopColor: colors.border, marginHorizontal: -CARD_PAD, marginBottom: -CARD_PAD, marginTop: 2 }}>
-                  {[
-                    { label: '− Set', hint: 'Reduce sets for this exercise', color: colors.text, onPress: () => reduceSets(bi) },
-                    { label: '+ Set', hint: 'Add a set', color: colors.accentText, onPress: () => addSet(bi) },
-                    ...(!b.weighted ? [{ label: '+ Weight', hint: 'Add weight to this exercise', color: colors.accentText, onPress: () => enableWeight(bi) }] : []),
-                    ...(b.compound && b.weighted && !hasWarmups ? [{ label: '+ Warm-ups', hint: 'Add warm-up sets', color: colors.accentText, onPress: () => addWarmups(bi) }] : []),
-                    { label: 'Swap', hint: 'Swap this exercise for a similar one', color: colors.text, onPress: () => setSwapIdx(bi) },
-                    { label: 'Skip', hint: 'Skip this exercise today', color: colors.danger, onPress: () => skipExercise(bi) },
-                  ].map((a, i) => (
+                <View style={{ borderTopWidth: 1, borderTopColor: colors.border, marginHorizontal: -CARD_PAD, marginBottom: -CARD_PAD, marginTop: 2 }}>
+                  <View style={{ minHeight: 64, paddingHorizontal: CARD_PAD, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                    <View style={{ gap: 1 }}>
+                      <Text style={type.action}>Working sets</Text>
+                      <Text style={type.meta}>Adjust for today</Text>
+                    </View>
+                    <View style={{ minHeight: TARGET, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: colors.border, borderRadius: 999, overflow: 'hidden' }}>
+                      <TouchableOpacity
+                        onPress={() => reduceSets(bi)} accessibilityRole="button" accessibilityLabel="Reduce sets for this exercise"
+                        style={{ width: TARGET, height: TARGET, alignItems: 'center', justifyContent: 'center' }}>
+                        <Ionicons name="remove" size={22} color={colors.text} />
+                      </TouchableOpacity>
+                      <View style={{ minWidth: 52, height: TARGET, alignItems: 'center', justifyContent: 'center', borderLeftWidth: 1, borderRightWidth: 1, borderColor: colors.border }}>
+                        <Text style={[type.data, { fontSize: 18 }]}>{workingSetCount}</Text>
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => addSet(bi)} accessibilityRole="button" accessibilityLabel="Add a set"
+                        style={{ width: TARGET, height: TARGET, alignItems: 'center', justifyContent: 'center' }}>
+                        <Ionicons name="add" size={22} color={colors.accentText} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <View style={{ flexDirection: 'row', borderTopWidth: 1, borderTopColor: colors.border }}>
+                    {exerciseActions.map((a, i) => (
                     <TouchableOpacity
                       key={a.label} onPress={a.onPress} accessibilityRole="button" accessibilityLabel={a.hint}
                       style={{
-                        width: '50%', minHeight: TARGET, alignItems: 'center', justifyContent: 'center',
-                        borderTopWidth: i >= 2 ? 1 : 0, borderLeftWidth: i % 2 ? 1 : 0, borderColor: colors.border,
+                        flex: 1, minHeight: 52, flexDirection: 'row', gap: 6, alignItems: 'center', justifyContent: 'center',
+                        borderLeftWidth: i > 0 ? 1 : 0, borderColor: colors.border, paddingHorizontal: 4,
                       }}>
+                      <Ionicons name={a.icon} size={17} color={a.color} />
                       <Text maxFontSizeMultiplier={1.3} style={[type.action, { color: a.color }]}>{a.label}</Text>
                     </TouchableOpacity>
-                  ))}
+                    ))}
+                  </View>
                 </View>
               </View>
             );
