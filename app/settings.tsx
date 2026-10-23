@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
 import { Stack, useNavigation } from 'expo-router';
 import { SettingsForm } from '../src/SettingsForm';
+import { ProCard } from '../src/ProCard';
 import { colors, type, ui } from '../src/theme';
 import { useContentStyle } from '../src/safe';
 
@@ -30,6 +31,8 @@ export default function SettingsScreen() {
         onSaved={() => { setSaved(true); setTimeout(() => setSaved(false), 3000); }}
       />
       {saved && <Text style={{ color: colors.accentText, textAlign: 'center' }} accessibilityLiveRegion="polite">Saved</Text>}
+      <ProCard />
+
       <View style={[ui.card, { gap: 6 }]}>
         <Text style={ui.h2}>About</Text>
         <Text style={type.meta}>

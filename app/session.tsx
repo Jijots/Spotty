@@ -75,7 +75,7 @@ export default function SessionScreen() {
   const params = useLocalSearchParams<{ mode?: string; programId?: string; day?: string }>();
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [dirty, setDirty] = useState(false);
-  const [startedAt, setStartedAt] = useState(Date.now());
+  const [startedAt, setStartedAt] = useState(() => Date.now());
   const [unit, setUnit] = useState<Unit>('kg');
   const [program, setProgram] = useState<StoredProgram | null>(null);
   const [mode, setMode] = useState<Mode>('auto');
@@ -114,11 +114,14 @@ export default function SessionScreen() {
   const progressRef = useRef(false);
   const snapshot = useRef<() => WorkoutDraft | null>(() => null);
 
-  progressRef.current = hasProgress(blocks, dirty);
-  snapshot.current = () =>
-    progressRef.current
-      ? { v: 1, mode, programId: program?.id ?? null, dayPos, startedAt, savedAt: Date.now(), unit, blocks }
-      : null;
+  useEffect(() => {
+    const hasCurrentProgress = hasProgress(blocks, dirty);
+    progressRef.current = hasCurrentProgress;
+    snapshot.current = () =>
+      hasCurrentProgress
+        ? { v: 1, mode, programId: program?.id ?? null, dayPos, startedAt, savedAt: Date.now(), unit, blocks }
+        : null;
+  }, [blocks, dayPos, dirty, mode, program?.id, startedAt, unit]);
 
   const step = weightStepKg(unit);
   const displayStep = unit === 'kg' ? 2.5 : 5; // what the ± buttons add, in the unit on screen
@@ -170,7 +173,11 @@ export default function SessionScreen() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps -- the route params are fixed for this screen
 
-  useEffect(() => { init(); }, [init]);
+  useEffect(() => {
+    // Session data comes from SQLite, so loading it is the synchronization this effect performs.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void init();
+  }, [init]);
 
   // Autosave the draft shortly after every change, and immediately when the app is backgrounded.
   useEffect(() => {
@@ -223,6 +230,8 @@ export default function SessionScreen() {
       setActive(null);
       wantFollow.current = true; // bring the next set into view once it has moved
       const sec = restSeconds({ compound: blocks[b].compound, warmup: row.warmup, compoundRest: rest.compound, isolationRest: rest.isolation, override: blocks[b].rest });
+      // The click time defines the countdown's absolute end, rather than contributing to rendering.
+      // eslint-disable-next-line react-hooks/purity
       setTimer({ endsAt: Date.now() + sec * 1000, total: sec });
     }
   };
@@ -244,6 +253,40 @@ export default function SessionScreen() {
   const removeRow = (b: number, r: number) => {
     if (blocks[b].rows.length <= 1) return Alert.alert('Keep at least one set', 'Use Swap to change the exercise instead.');
     edit((cur) => cur.map((blk, i) => (i !== b ? blk : { ...blk, rows: blk.rows.filter((_, j) => j !== r) })));
+  };
+
+  /** Removes the last open working set. Completed sets stay protected from an accidental tap. */
+  const reduceSets = (b: number) => {
+    const working = blocks[b].rows.filter((r) => !r.warmup);
+    if (working.length <= 1) return Alert.alert('Keep at least one set', 'Skip the exercise if you cannot do it today.');
+    let remove = -1;
+    for (let i = blocks[b].rows.length - 1; i >= 0; i--) {
+      if (!blocks[b].rows[i].warmup && !blocks[b].rows[i].done) { remove = i; break; }
+    }
+    if (remove === -1) return Alert.alert('All sets are complete', 'Untick a set before removing it.');
+    removeRow(b, remove);
+  };
+
+  /** Skipping before an exercise removes it; ending one early keeps every set already completed. */
+  const skipExercise = (b: number) => {
+    const block = blocks[b];
+    const completed = block.rows.filter((r) => r.done);
+    const apply = () => {
+      setActive(null);
+      edit((cur) => completed.length
+        ? cur.map((x, i) => (i === b ? { ...x, rows: x.rows.filter((r) => r.done) } : x))
+        : cur.filter((_, i) => i !== b));
+    };
+    Alert.alert(
+      completed.length ? `End ${block.name} early?` : `Skip ${block.name}?`,
+      completed.length
+        ? 'Completed sets will stay in your workout. The remaining sets will be removed.'
+        : 'It will be removed from this workout. You can still swap it for a similar exercise instead.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: completed.length ? 'End exercise' : 'Skip exercise', onPress: apply },
+      ],
+    );
   };
 
   const addWarmups = (b: number) => {
@@ -402,7 +445,7 @@ export default function SessionScreen() {
       const ry = rowY.current[currentKey];
       if (cy === undefined || ry === undefined) return; // not measured yet: staying put beats jumping to the top
       const top = cy + ry;
-      const to = followOffset({ top, height: 116, offset: scrollY.current, view: viewH.current, bottomPad: timer ? 150 : 24 });
+      const to = followOffset({ top, height: 116, offset: scrollY.current, view: viewH.current, bottomPad: 24 });
       if (to !== null) scrollRef.current?.scrollTo({ y: to, animated });
     }, 80); // let the old highlight collapse and the new row lay out first
     return () => clearTimeout(t);
@@ -429,7 +472,7 @@ export default function SessionScreen() {
         {!summary && blocks.length > 0 && <ElapsedClock since={startedAt} style={{ fontSize: 22, marginRight: 8 }} />}
       </View>
 
-      <ScrollView ref={scrollRef} onScroll={(e) => { scrollY.current = e.nativeEvent.contentOffset.y; }} scrollEventThrottle={32} onLayout={(e) => { viewH.current = e.nativeEvent.layout.height; }} style={ui.screen} contentContainerStyle={[ui.content, { paddingBottom: 16 + insets.bottom }, timer && { paddingBottom: 150 + insets.bottom }]} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag" automaticallyAdjustKeyboardInsets>
+      <ScrollView ref={scrollRef} onScroll={(e) => { scrollY.current = e.nativeEvent.contentOffset.y; }} scrollEventThrottle={32} onLayout={(e) => { viewH.current = e.nativeEvent.layout.height; }} style={ui.screen} contentContainerStyle={[ui.content, { paddingBottom: 16 + insets.bottom }]} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag" automaticallyAdjustKeyboardInsets>
         {summary ? <SummaryView summary={summary} onDone={() => router.dismissTo('/')} onReopen={saved ? reopen : undefined} reopening={reopening} /> : (<>
           {progress.total > 0 && (
             <Text style={type.meta}>
@@ -439,9 +482,9 @@ export default function SessionScreen() {
 
           {tipSeen === false && blocks.length > 0 && (
             <View style={[ui.card, { gap: 8 }]}>
-              <Text style={ui.h2}>What's RIR?</Text>
+              <Text style={ui.h2}>What’s RIR?</Text>
               <Text style={ui.muted}>Reps in reserve: how many more reps you could have done. If you stopped with 2 left, enter 2. Not sure? Leave it blank.</Text>
-              <Text style={ui.muted}>Hold a set number to remove that set.</Text>
+              <Text style={ui.muted}>Use − Set and + Set on an exercise to adjust today’s work.</Text>
               <TouchableOpacity
                 style={ui.ghost} accessibilityRole="button"
                 onPress={() => { setTipSeen(true); setSetting('tip:rir', true).catch(() => {}); }}>
@@ -458,7 +501,7 @@ export default function SessionScreen() {
 
           {loadError && (
             <View style={[ui.card, { gap: 8 }]}>
-              <Text style={ui.h2}>Couldn't load your workout</Text>
+              <Text style={ui.h2}>Couldn’t load your workout</Text>
               <Text style={ui.muted}>Your workouts are safe on this device. Try again, and restart the app if it keeps happening.</Text>
               <Text style={type.meta}>{loadError}</Text>
               <TouchableOpacity style={ui.button} onPress={() => { setLoading(true); init(); }}><Text style={ui.buttonText}>Try again</Text></TouchableOpacity>
@@ -534,17 +577,22 @@ export default function SessionScreen() {
                   );
                 })}
 
-                {/* Card actions: full-width 48 dp segments instead of three loose text links */}
-                <View style={{ flexDirection: 'row', borderTopWidth: 1, borderTopColor: colors.border, marginHorizontal: -CARD_PAD, marginBottom: -CARD_PAD, marginTop: 2 }}>
+                {/* A two-column grid keeps set, swap and skip controls visible at a one-hand-friendly size. */}
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', borderTopWidth: 1, borderTopColor: colors.border, marginHorizontal: -CARD_PAD, marginBottom: -CARD_PAD, marginTop: 2 }}>
                   {[
+                    { label: '− Set', hint: 'Reduce sets for this exercise', color: colors.text, onPress: () => reduceSets(bi) },
                     { label: '+ Set', hint: 'Add a set', color: colors.accentText, onPress: () => addSet(bi) },
                     ...(!b.weighted ? [{ label: '+ Weight', hint: 'Add weight to this exercise', color: colors.accentText, onPress: () => enableWeight(bi) }] : []),
-                  ...(b.compound && b.weighted && !hasWarmups ? [{ label: '+ Warm-ups', hint: 'Add warm-up sets', color: colors.accentText, onPress: () => addWarmups(bi) }] : []),
+                    ...(b.compound && b.weighted && !hasWarmups ? [{ label: '+ Warm-ups', hint: 'Add warm-up sets', color: colors.accentText, onPress: () => addWarmups(bi) }] : []),
                     { label: 'Swap', hint: 'Swap this exercise for a similar one', color: colors.text, onPress: () => setSwapIdx(bi) },
+                    { label: 'Skip', hint: 'Skip this exercise today', color: colors.danger, onPress: () => skipExercise(bi) },
                   ].map((a, i) => (
                     <TouchableOpacity
                       key={a.label} onPress={a.onPress} accessibilityRole="button" accessibilityLabel={a.hint}
-                      style={{ flex: 1, minHeight: TARGET, alignItems: 'center', justifyContent: 'center', borderLeftWidth: i ? 1 : 0, borderLeftColor: colors.border }}>
+                      style={{
+                        width: '50%', minHeight: TARGET, alignItems: 'center', justifyContent: 'center',
+                        borderTopWidth: i >= 2 ? 1 : 0, borderLeftWidth: i % 2 ? 1 : 0, borderColor: colors.border,
+                      }}>
                       <Text maxFontSizeMultiplier={1.3} style={[type.action, { color: a.color }]}>{a.label}</Text>
                     </TouchableOpacity>
                   ))}
@@ -566,7 +614,7 @@ export default function SessionScreen() {
         </>)}
       </ScrollView>
 
-      {timer && <RestTimer bottomInset={insets.bottom} endsAt={timer.endsAt} totalSec={timer.total} next={restNext} onAdjust={adjustTimer} onClose={() => setTimer(null)} />}
+      {timer && <RestTimer endsAt={timer.endsAt} totalSec={timer.total} next={restNext} onAdjust={adjustTimer} onClose={() => setTimer(null)} />}
 
       <RestDialog
         visible={restIdx !== null}

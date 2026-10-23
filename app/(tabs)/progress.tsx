@@ -53,12 +53,15 @@ export default function ProgressScreen() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [loaded, setLoaded] = useState(false);
+  const [now, setNow] = useState(() => Date.now());
 
   const load = useCallback(async () => {
     const [ws, sets, d, wi, settings, cat] = await Promise.all([
       workoutHistory(1000), pastSets(), recentDays(42), recentWeighIns(5), loadSettings(), fullCatalog(),
     ]);
-    setWorkouts(ws); setBests(personalBests(sets)); setMuscleSets(weeklyMuscleSets(sets, startOfWeek(Date.now()).getTime(), cat)); setDays(d); setWeighIns(wi); setUnit(settings.unit);
+    const currentTime = Date.now();
+    setWorkouts(ws); setBests(personalBests(sets)); setMuscleSets(weeklyMuscleSets(sets, startOfWeek(currentTime).getTime(), cat)); setDays(d); setWeighIns(wi); setUnit(settings.unit);
+    setNow(currentTime);
     setCatalog(new Map(cat.map((x) => [x.id, x]))); setLoaded(true);
   }, []);
   useFocusEffect(useCallback(() => { load(); }, [load]));
@@ -66,7 +69,7 @@ export default function ProgressScreen() {
   const all = totals(workouts);
   const bins = weeklyCounts(workouts, 8);
   const strip = weekStrip(workouts);
-  const thisWeek = totals(workouts.filter((w) => w.started_at >= startOfWeek(Date.now()).getTime()));
+  const thisWeek = totals(workouts.filter((w) => w.started_at >= startOfWeek(now).getTime()));
 
   const muscleList = Object.entries(muscleSets).sort((a, b) => (b[1] ?? 0) - (a[1] ?? 0)).map(([m, n]) => [m, Math.round((n ?? 0) * 10) / 10] as const);
 
@@ -192,7 +195,7 @@ export default function ProgressScreen() {
         )}
 
         <View style={{ gap: 6 }}>
-          <Text style={type.header}>Today's weight ({unit})</Text>
+          <Text style={type.header}>Today’s weight ({unit})</Text>
           <View style={ui.row}>
             <TextInput
               style={[ui.input, { flex: 1, minHeight: TARGET }]} keyboardType="decimal-pad" value={input} maxLength={7}

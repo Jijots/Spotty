@@ -5,7 +5,13 @@ import { ui } from './theme';
 /** Integer input that lets you clear the field while typing; only commits valid numbers. */
 export function NumInput({ value, onChange, width = 48 }: { value: number; onChange: (n: number) => void; width?: number }) {
   const [text, setText] = useState(String(value));
-  useEffect(() => { if (text !== '' && Number(text) !== value) setText(String(value)); }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (text !== '' && Number(text) !== value) {
+      // Keep the editable string in sync when the parent changes the numeric value.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setText(String(value));
+    }
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <TextInput

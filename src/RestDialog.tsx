@@ -38,8 +38,11 @@ export function RestDialog({ visible, title, value, defaultSec, onSave, onClose 
   const [sec, setSec] = useState(defaultSec);
   useEffect(() => {
     if (!visible) return;
+    // Opening the modal starts a fresh editing draft from the saved setting.
+    /* eslint-disable react-hooks/set-state-in-effect */
     setCustom(value != null);
     setSec(value ?? defaultSec);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [visible, value, defaultSec]);
 
   return (

@@ -5,7 +5,7 @@ import { colors, type } from './theme';
 
 /** Counts up from `since`, once a second. It reads the wall clock, so it stays right after the app was in the background. */
 export function ElapsedClock({ since, style }: { since: number; style?: TextStyle }) {
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(t);

@@ -15,7 +15,7 @@ import { startSession } from '../../src/session';
 import { ElapsedClock } from '../../src/ElapsedClock';
 import { WeekStrip } from '../../src/charts';
 import { BodyMap, LevelLegend } from '../../src/BodyMap';
-import { CARD_PAD, TARGET, colors, type, ui } from '../../src/theme';
+import { TARGET, colors, type, ui } from '../../src/theme';
 import { cap } from '../../src/lib/text';
 
 type WorkoutRow = Awaited<ReturnType<typeof workoutHistory>>[number];
@@ -50,6 +50,7 @@ export default function TodayScreen() {
   const [workouts, setWorkouts] = useState<WorkoutRow[]>([]);
   const [rec, setRec] = useState<Record<string, number>>({});
   const [loaded, setLoaded] = useState(false);
+  const [now, setNow] = useState(() => Date.now());
 
   const load = useCallback(async () => {
     const [d, activeId, ws, history, catalog] = await Promise.all([
@@ -61,7 +62,9 @@ export default function TodayScreen() {
     setProgram(prog);
     setNextPos(prog ? await nextDayPosition(prog.id, prog.days.length) : 0);
     setWorkouts(ws);
-    setRec(recovery(history, Date.now(), catalog));
+    const currentTime = Date.now();
+    setRec(recovery(history, currentTime, catalog));
+    setNow(currentTime);
     setLoaded(true);
   }, []);
   useFocusEffect(useCallback(() => { load().catch(() => setLoaded(true)); }, [load]));
@@ -73,7 +76,7 @@ export default function TodayScreen() {
     ]);
 
   const strip = weekStrip(workouts);
-  const thisWeek = totals(workouts.filter((w) => w.started_at >= startOfWeek(Date.now()).getTime()));
+  const thisWeek = totals(workouts.filter((w) => w.started_at >= startOfWeek(now).getTime()));
   const upNext = program?.days[nextPos] ?? program?.days[0];
 
   // The open workout, if any.
@@ -82,13 +85,14 @@ export default function TodayScreen() {
   const draftTitle = draftDay ?? 'Quick workout';
   const draftProgress = draft ? sessionProgress(draft.blocks) : { done: 0, total: 0 };
 
-  const ready = MUSCLES.filter((m) => m !== 'forearms' && (rec[m] ?? 1) >= 0.9);
   const muscles = MUSCLES.filter((m) => m !== 'forearms');
   const recovering = muscles.filter((m) => (rec[m] ?? 1) < 0.9);
+  // Recovery rises toward 1. The map shows the inverse so color means "you trained this" rather than "you did not".
+  const worked = Object.fromEntries(muscles.map((m) => [m, Math.max(0, 1 - (rec[m] ?? 1))]));
 
   return (
     <ScrollView style={ui.screen} contentContainerStyle={ui.content}>
-      <Text style={type.meta}>{shortDate(Date.now())}</Text>
+      <Text style={type.meta}>{shortDate(now)}</Text>
 
       {draft ? (
         <View style={{ backgroundColor: colors.accent, borderRadius: 24, padding: 18, gap: 14 }}>
@@ -150,14 +154,13 @@ export default function TodayScreen() {
       </View>
 
       <View style={[ui.card, { gap: 12 }]}>
-        <Text style={ui.h2}>Recovery</Text>
+        <Text style={ui.h2}>Muscles worked</Text>
         <Text style={ui.muted}>
-          {ready.length === muscles.length ? 'Everything is fresh.'
-            : ready.length > 0 ? `Ready to train: ${ready.map(cap).join(', ')}.` : 'Everything is still recovering.'}
+          {recovering.length > 0 ? `Recently trained: ${recovering.map(cap).join(', ')}.` : 'Complete a workout to see it here.'}
         </Text>
-        <View style={{ alignItems: 'center' }}><BodyMap levels={rec} /></View>
-        <LevelLegend high="Ready" low="Recovering" />
-        <Text style={type.meta}>Bright muscles are ready to train. Faint ones are still recovering.</Text>
+        <View style={{ alignItems: 'center' }}><BodyMap levels={worked} /></View>
+        <LevelLegend high="More recent" low="Recovered" />
+        <Text style={type.meta}>Highlighted muscles are what you worked. Brighter means more recent.</Text>
         {recovering.length > 0 && (
           <Text style={type.meta}>
             Still recovering: {recovering.map((m) => `${cap(m)} (${Math.ceil((1 - (rec[m] ?? 1)) * RECOVERY_HOURS)}h)`).join(', ')}.
