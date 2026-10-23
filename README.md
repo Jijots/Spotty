@@ -1,6 +1,6 @@
 # Spotty
 
-A free, open-source workout app for Android and iOS, built around a quiet training partner: it logs your sets,
+A free, open-source workout app for Android (iPhone is planned), built around a quiet training partner: it logs your sets,
 times your rest, suggests when to add weight, and speaks up only when it helps.
 
 No account. No subscription. No ads. Everything you log stays on your phone (SQLite).
@@ -34,7 +34,7 @@ Supporters help fund the Pro ideas on the roadmap: AI-generated programs and imp
 
 ## Run it
 
-Requires Node 20+ and the Expo Go app (or an Android/iOS build).
+Requires Node 20+ and the Expo Go app (or an Android build).
 
 ```bash
 npm install --legacy-peer-deps
