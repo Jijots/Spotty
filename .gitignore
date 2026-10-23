@@ -45,3 +45,6 @@ yarn-error.*
 .claude/
 .mcp.json
 .impeccable/critique/
+
+# build outputs
+/release/
